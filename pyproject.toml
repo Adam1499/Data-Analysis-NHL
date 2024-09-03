@@ -1,0 +1,9 @@
+[tool.black]
+
+[tool.mypy]
+
+[tool.ruff]
+lint.select = ["D"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"

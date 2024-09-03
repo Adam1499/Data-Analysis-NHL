@@ -1,3 +1,8 @@
+black
+black[jupyter]
 matplotlib
+mypy
 pandas
 requests
+ruff
+types-requests

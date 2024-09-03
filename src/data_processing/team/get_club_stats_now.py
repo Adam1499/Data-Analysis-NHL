@@ -1,12 +1,13 @@
-from src.api.team import NHLTeamClient
+"""Module for processing the get_club_stats_now response."""
+
 
 def filter_skaters_by_criteria(
-    stats_data, 
-    min_games=None, 
-    min_goals=None, 
+    stats_data,
+    min_games=None,
+    min_goals=None,
     min_assists=None,
-    min_points=None,  
-    min_penalty_minutes=None
+    min_points=None,
+    min_penalty_minutes=None,
 ):
     """Filter players based on multiple criteria."""
     skaters = stats_data.get("skaters", [])
@@ -17,7 +18,8 @@ def filter_skaters_by_criteria(
         lambda player: min_assists is None or player.get("assists", 0) >= min_assists,
         lambda player: min_points is None or player.get("points", 0) >= min_points,
         # plusMinus
-        lambda player: min_penalty_minutes is None or player.get("penaltyMinutes", 0) >= min_penalty_minutes
+        lambda player: min_penalty_minutes is None
+        or player.get("penaltyMinutes", 0) >= min_penalty_minutes,
         # powerPlayGoals
         # shorthandedGoals
         # overtimeGoals
@@ -30,10 +32,3 @@ def filter_skaters_by_criteria(
         player for player in skaters if all(criterion(player) for criterion in criteria)
     ]
     return filtered_players
-
-# Example usage
-if __name__ == "__main__":
-    client = NHLTeamClient()
-    response = client.get_club_stats_now("ANA")
-    result = filter_skaters_by_criteria(response, min_games=70)
-    print(result)
