@@ -1,16 +1,22 @@
 """Module for processing the get_club_stats_now response."""
+import pandas as pd
+
+from src.api.team import NHLTeamClient
+
+client = NHLTeamClient()
 
 
 def filter_skaters_by_criteria(
-    stats_data,
-    min_games=None,
-    min_goals=None,
-    min_assists=None,
-    min_points=None,
-    min_penalty_minutes=None,
-):
+    team: str,
+    min_games: int | None = None,
+    min_goals: int | None = None,
+    min_assists: int | None = None,
+    min_points: int | None = None,
+    min_penalty_minutes: int | None = None,
+) -> pd.DataFrame:
     """Filter players based on multiple criteria."""
-    skaters = stats_data.get("skaters", [])
+    response = client.get_club_stats_now(team=team)
+    skaters = response.get("skaters", [])
     criteria = [
         # positionCode
         lambda player: min_games is None or player.get("gamesPlayed", 0) >= min_games,
